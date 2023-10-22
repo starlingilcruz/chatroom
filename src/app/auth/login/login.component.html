@@ -1,1 +1,13 @@
-<p>login works!</p>
+<div class="auth-container">
+  <ng-container>
+    <form [formGroup]="form">
+      <label for="email">Email:</label>
+      <input type="text" formControlName="email">
+
+      <label for="password">Password:</label>
+      <input type="password" formControlName="password">
+
+      <button type="submit" (click)="submit()">Login</button>
+    </form>
+  </ng-container>
+</div>
