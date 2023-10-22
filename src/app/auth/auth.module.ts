@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AuthComponent } from './auth.component';
 import { LoginModule } from './login/login.module';
-import { SignupComponent } from './signup/signup.component';
+import { SignupModule } from './signup/signup.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
@@ -12,14 +12,15 @@ import { AuthGuard } from './auth.guard';
 @NgModule({
   declarations: [
     AuthComponent,
-    SignupComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     
     AuthRoutingModule,
-    LoginModule
+    
+    LoginModule,
+    SignupModule
   ],
   providers: [AuthService, AuthGuard]
 })

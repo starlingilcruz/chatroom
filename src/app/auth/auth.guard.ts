@@ -6,16 +6,16 @@ import { AuthService } from './auth.service';
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private router: Router, 
-    private authService: AuthService) {}
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   canActivate() {
     if (!this.authService.isTokenExpired()) {
-      this.router.navigate(['/home']);
       return true;
     }
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['auth']);
     return false;
   }
 

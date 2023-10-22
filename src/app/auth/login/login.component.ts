@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 interface ILogin {
   email: string;
@@ -17,6 +19,7 @@ export class LoginComponent {
   form: FormGroup;
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService
   ) {
@@ -28,8 +31,11 @@ export class LoginComponent {
 
   submit() {
     const { email, password } = this.form.getRawValue();
-    this.authService.login(email, password);
-
+    this.authService.login(email, password).subscribe((res) => {
+      if (res["Jwt"]) {
+        this.router.navigate(['chatrooms']);
+      }
+    });
   }
 
 }

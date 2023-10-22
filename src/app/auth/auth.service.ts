@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 export const TOKEN_NAME: string = 'jwt_token';
 
@@ -14,16 +16,33 @@ export abstract class BaseAuthService {
   abstract signUp(username: string, email: string, password: string): void;
 }
 
-
 @Injectable()
 export class AuthService implements BaseAuthService {
 
   private url = 'http://localhost:8000';
-  private endpoint: string = 'v1/api/auth/login';
-  private headers = new Headers({ 'Content-Type': 'application/json' });
-
+  private endpoint: string = 'v1/api/auth';
 
   constructor(private http: HttpClient) { }
+
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.url}/${this.endpoint}/login`, { email, password })
+      .pipe(
+        map((res) => {
+          this.setToken(res["Jwt"])
+          return res;
+        })
+      );
+  }
+
+  signUp(username: string, email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.url}/${this.endpoint}/signup`, { username, email, password })
+    .pipe(
+      map((res) => {
+        this.setToken(res["Jwt"])
+        return res;
+      })
+    );
+  }
 
   getToken(): string | null {
     console.log("----getting token ", localStorage.getItem(TOKEN_NAME));
@@ -38,8 +57,6 @@ export class AuthService implements BaseAuthService {
   getTokenExpirationDate(token: string): Date {
     const decoded = jwt_decode(token);
 
-    // if ((decoded as any).exp === undefined) return null;
-
     const date = new Date(0);
     date.setUTCSeconds((decoded as any).exp);
     return date;
@@ -52,18 +69,5 @@ export class AuthService implements BaseAuthService {
     const date = this.getTokenExpirationDate(token);
     if (date === undefined) return false;
     return !(date.valueOf() > new Date().valueOf());
-  }
-
-  login(email: string, password: string): void {
-    console.log(email)
-    const headers = { 'Authorization': 'Bearer my-token' }
-    this.http.post<any>(`${this.url}/${this.endpoint}`, { email, password })
-      .subscribe(
-        (data) => this.setToken(data["Jwt"])
-      );
-  }
-
-  signUp(username: string, email: string, password: string): void {
-
   }
 }
