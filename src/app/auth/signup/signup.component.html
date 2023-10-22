@@ -1,1 +1,18 @@
-<p>signup works!</p>
+<div class="auth-container">
+  <ng-container>
+    <form [formGroup]="form">
+      <label for="username">Username:</label>
+      <input type="text" formControlName="username">
+
+      <label for="email">Email:</label>
+      <input type="text" formControlName="email">
+
+      <label for="password">Password:</label>
+      <input type="password" formControlName="password">
+
+      <button type="submit" (click)="submit()">Sign Up</button>
+    </form>
+
+    <button type="submit" [routerLink]="'/auth/login'">Already have an account</button>
+  </ng-container>
+</div>
