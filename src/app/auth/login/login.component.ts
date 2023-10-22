@@ -4,10 +4,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
-interface ILogin {
-  email: string;
-  password: string;
-}
 
 @Component({
   selector: 'app-login',

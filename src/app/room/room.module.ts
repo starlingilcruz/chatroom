@@ -5,6 +5,7 @@ import { RoomComponent } from './room.component';
 import { RoomRoutingModule } from './room-routing.module';
 import { RoomService } from './room.service';
 import { RoomListComponent } from './room-list/room-list.component';
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,9 @@ import { RoomListComponent } from './room-list/room-list.component';
   imports: [
     CommonModule,
 
-    RoomRoutingModule
+    RoomRoutingModule,
+    ChatModule,
+
   ],
   providers: [RoomService]
 })

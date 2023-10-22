@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RoomService } from './room.service';
 
 @Component({
   selector: 'app-room',
@@ -8,14 +7,6 @@ import { RoomService } from './room.service';
 })
 export class RoomComponent {
 
-  constructor(
-    private roomService: RoomService
-  ) {
-
-  }
-
-  ngOnInit() {
-    this.roomService.list().subscribe(r => console.log(r))
-  }
+  constructor() {}
 
 }

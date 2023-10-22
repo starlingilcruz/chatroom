@@ -27,7 +27,5 @@ export class RoomService {
     return this.http.post<any>(`${this.url}/${this.endpoint}/`, {}, { headers: httpHeaders });
   }
 
-  create() {
-
-  }
+  create() {}
 }

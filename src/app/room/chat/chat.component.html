@@ -1,0 +1,15 @@
+<p>Chatting Room</p>
+
+<input 
+  type="text" 
+  [formControl]="message"
+  placeholder="Typing anything..."
+/>
+<button (click)="sendMessage()">Send Message</button>
+
+<ul>
+  <!-- <li *ngFor="let body of messages$ | async"> -->
+  <li *ngFor="let body of messages">
+    {{ body.user }}: {{ body.message}}
+  </li>
+</ul>
