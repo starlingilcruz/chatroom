@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'chatrooms',
     loadChildren: () => import('./room/room.module').then(m => m.RoomModule),
     canActivate: [AuthGuard]
-  },
+  }
 ];
 
 @NgModule({

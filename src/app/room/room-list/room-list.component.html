@@ -1,0 +1,12 @@
+
+Available rooms (click to join):
+
+<ul>
+  <li 
+    *ngFor="let room of rooms" 
+    class="clickable"
+    [routerLink]="['/','chatrooms', room.ID]"
+  >
+    {{ room.Name }} 
+  </li>
+</ul>
