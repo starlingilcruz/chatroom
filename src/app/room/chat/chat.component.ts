@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 
 import { ChatService } from './chat.service';
 import { BroadCast } from './interfaces';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -12,15 +13,20 @@ import { BroadCast } from './interfaces';
 })
 export class ChatComponent {
 
+  private roomId: number = 0;
+
   message = new FormControl('');
   messages: BroadCast['Body'][] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private service: ChatService
   ) { }
 
   ngOnInit() {
-    this.service.initWebsocket((broadCast: BroadCast) => {
+    this.roomId = this.route.snapshot.params["roomId"];
+
+    this.service.initWebsocket(this.roomId, (broadCast: BroadCast) => {
       const { Body, Type } = broadCast;
 
       switch (Type) {
@@ -34,6 +40,11 @@ export class ChatComponent {
         }
         case 3: {
           console.warn("Websocket disconnected")
+          break;
+        }
+        case 4: {
+          // bot messages
+          this.messages.push(Body);
           break;
         }
         default: {
@@ -50,7 +61,7 @@ export class ChatComponent {
     }
 
     this.service.sendMesasges(
-      "user@", this.message.value as string, 10
+      this.message.value as string, Number(this.roomId)
     );
     this.message.reset();
   }

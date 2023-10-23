@@ -15,6 +15,16 @@ export class RoomListComponent {
   ) {}
 
   ngOnInit() {
+    this.loadRooms();
+  }
+
+  createNew() {
+    this.roomService.create(
+      (this.rooms.length + 1).toString()
+    ).subscribe(() => this.loadRooms());
+  }
+
+  private loadRooms() {
     this.roomService.list().subscribe(
       (data) => {
         this.rooms = (data as any)["Rooms"];
