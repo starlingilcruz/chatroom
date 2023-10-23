@@ -27,5 +27,15 @@ export class RoomService {
     return this.http.post<any>(`${this.url}/${this.endpoint}/`, {}, { headers: httpHeaders });
   }
 
-  create() {}
+  create(sufix: string) {
+    const token = this.authService.getToken();
+
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post<any>(`${this.url}/${this.endpoint}/create`, {
+      name: `Room ${sufix}`
+    }, { headers: httpHeaders });
+  }
 }

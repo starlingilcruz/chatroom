@@ -20,8 +20,11 @@ export class ChatService {
   ) {
   }
 
-  initWebsocket(broadCast: (b: any) => any ) {
-    this.ws = new WebSocket(`${this.wsUrl}/v1/ws`);
+  initWebsocket(roomId: number = 0, broadCast: (b: any) => any ) {
+    const token = this.authService.getToken();
+    
+    // TODO support room isolation
+    this.ws = new WebSocket(`${this.wsUrl}/v1/ws?token=${token}`);
 
     this.ws.onopen = function () {
       console.log("The connection was setup successfully !");
@@ -50,7 +53,7 @@ export class ChatService {
     );
   }
 
-  sendMesasges(email: string, message: string, roomId: number) {
-    this.ws.send(JSON.stringify({ email, message, roomId }));
+  sendMesasges(message: string, roomId: number) {
+    this.ws.send(JSON.stringify({ message, roomId }));
   }
 }
