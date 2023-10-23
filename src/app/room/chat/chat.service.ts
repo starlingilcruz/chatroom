@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
 
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class ChatService {
 
   private url = 'http://localhost:8000';
@@ -17,14 +17,12 @@ export class ChatService {
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   initWebsocket(roomId: number = 0, broadCast: (b: any) => any ) {
     const token = this.authService.getToken();
     
-    // TODO support room isolation
-    this.ws = new WebSocket(`${this.wsUrl}/v1/ws?token=${token}`);
+    this.ws = new WebSocket(`${this.wsUrl}/v1/ws?roomId=${roomId}&token=${token}`);
 
     this.ws.onopen = function () {
       console.log("The connection was setup successfully !");
@@ -48,12 +46,16 @@ export class ChatService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.post<any>(
-      `${this.url}/${this.endpoint}/${roomId}/messages`, {}, { headers: httpHeaders }
+    return this.http.get<any[]>(
+      `${this.url}/${this.endpoint}/${roomId}/messages`, { headers: httpHeaders }
     );
   }
 
   sendMesasges(message: string, roomId: number) {
     this.ws.send(JSON.stringify({ message, roomId }));
+  }
+
+  disconnectWebSocket() {
+    this.ws.close();
   }
 }

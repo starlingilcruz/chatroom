@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ChatService } from './chat.service';
 import { BroadCast } from './interfaces';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ChatComponent {
 
   ngOnInit() {
     this.roomId = this.route.snapshot.params["roomId"];
+    this.loadMessages(this.roomId);
 
     this.service.initWebsocket(this.roomId, (broadCast: BroadCast) => {
       const { Body, Type } = broadCast;
@@ -54,6 +56,21 @@ export class ChatComponent {
     });
   }
 
+  loadMessages(roomId: number) {
+    this.service.listMessages(Number(this.roomId))
+    .subscribe(
+      data => {
+        this.messages = ((data as any)["Messages"] as any[]).map((d) => {
+          return {
+            user: d["User"]["UserName"],
+            message: d["Message"],
+            roomId: d["RoomId"]
+          }
+        });
+      }
+    );
+  }
+
   sendMessage(){
     if (this.message.value?.length === 0) {
       console.warn("No message provided");
@@ -64,5 +81,9 @@ export class ChatComponent {
       this.message.value as string, Number(this.roomId)
     );
     this.message.reset();
+  }
+
+  ngOnDestroy() {
+    this.service.disconnectWebSocket();
   }
 }
