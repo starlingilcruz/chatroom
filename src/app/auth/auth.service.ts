@@ -45,12 +45,10 @@ export class AuthService implements BaseAuthService {
   }
 
   getToken(): string | null {
-    console.log("----getting token ", localStorage.getItem(TOKEN_NAME));
     return localStorage.getItem(TOKEN_NAME);
   }
 
   setToken(token: string): void {
-    console.log("----setting token ", token);
     localStorage.setItem(TOKEN_NAME, token);
   }
 
